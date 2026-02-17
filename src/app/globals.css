@@ -1,26 +1,63 @@
-@import "tailwindcss";
+@import url('https://unpkg.com/leaflet@1.9.4/dist/leaflet.css');
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Leaflet container must have a defined height */
+.leaflet-container {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 400px;
+  background: #0f172a !important;
+  /* Dark background before tiles load */
+  z-index: 10;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* Custom Marker Styling */
+.custom-marker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.marker-inner {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 3px solid white;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  background: #333;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.marker-inner:hover {
+  transform: scale(1.2);
+  z-index: 1000;
+}
+
+.marker-avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Dark Mode Map Tiles Filter - REMOVED for standard OpenStreetMap look */
+/* .leaflet-tile-pane {
+  filter: brightness(0.6) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3) brightness(0.7);
+} */
+
+/* Popup Styling */
+.leaflet-popup-content-wrapper {
+  background: rgba(15, 23, 42, 0.9) !important;
+  backdrop-filter: blur(10px);
+  color: white !important;
+  border-radius: 16px !important;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0 !important;
+}
+
+.leaflet-popup-content {
+  margin: 16px !important;
+}
+
+.leaflet-popup-tip {
+  background: rgba(15, 23, 42, 0.9) !important;
 }
