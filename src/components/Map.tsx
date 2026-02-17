@@ -7,15 +7,6 @@ import 'leaflet/dist/leaflet.css';
 import { FamilyMember } from '@/hooks/useRealtimeLocations';
 import { Battery, Clock, Navigation } from 'lucide-react';
 
-// Fix for default marker icons in Leaflet + Next.js
-// @ts-ignore
-delete L.Icon.Default.prototype._getIconUrl;
-L.Icon.Default.mergeOptions({
-    iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
-    iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
-    shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
-});
-
 interface MapProps {
     members: FamilyMember[];
     selectedId: string | null;
@@ -25,10 +16,20 @@ interface MapProps {
 function ChangeView({ center, zoom }: { center: [number, number]; zoom: number }) {
     const map = useMap();
     useEffect(() => {
+        // Fix for default marker icons in Leaflet + Next.js
+        // @ts-ignore
+        delete L.Icon.Default.prototype._getIconUrl;
+        L.Icon.Default.mergeOptions({
+            iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
+            iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+            shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+        });
+
         map.setView(center, zoom, { animate: true, duration: 1 });
     }, [center, zoom, map]);
     return null;
 }
+
 
 export default function Map({ members, selectedId }: MapProps) {
     const selectedMember = members.find(m => m.user_id === selectedId);
