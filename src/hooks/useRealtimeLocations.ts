@@ -28,42 +28,28 @@ export function useRealtimeLocations() {
 
     useEffect(() => {
         async function fetchData() {
-            // Get current user's family ID first
-            const { data: { user } } = await supabase.auth.getUser();
-            if (!user) {
-                setLoading(false);
-                return;
-            }
-
-            const { data: currentUserMember } = await supabase
+            // Fetch all members (simplified for no-login flow)
+            const { data: familyMembers, error: membersError } = await supabase
                 .from('family_members')
-                .select('family_id')
-                .eq('user_id', user.id)
-                .single();
+                .select('*');
 
-            if (!currentUserMember) {
-                setLoading(false);
-                return;
-            }
-
-            // Fetch all members in the family
-            const { data: familyMembers } = await supabase
-                .from('family_members')
-                .select('*')
-                .eq('family_id', currentUserMember.family_id);
-
-            if (!familyMembers) {
+            if (membersError || !familyMembers) {
+                console.error('Error fetching members:', membersError);
                 setLoading(false);
                 return;
             }
 
             // Fetch latest location for each member
             const memberIds = familyMembers.map(m => m.user_id);
-            const { data: latestLocations } = await supabase
+            const { data: latestLocations, error: locationsError } = await supabase
                 .from('locations')
                 .select('*')
                 .in('user_id', memberIds)
                 .order('timestamp', { ascending: false });
+
+            if (locationsError) {
+                console.error('Error fetching locations:', locationsError);
+            }
 
             // Group locations by user_id and take the latest
             const membersWithLocations = familyMembers.map(member => {

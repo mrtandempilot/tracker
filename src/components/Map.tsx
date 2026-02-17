@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -17,7 +17,7 @@ function ChangeView({ center, zoom }: { center: [number, number]; zoom: number }
     const map = useMap();
     useEffect(() => {
         // Fix for default marker icons in Leaflet + Next.js
-        // @ts-ignore
+        // @ts-expect-error - Leaflet icon property access
         delete L.Icon.Default.prototype._getIconUrl;
         L.Icon.Default.mergeOptions({
             iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',

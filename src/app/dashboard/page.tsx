@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import dynamic from 'next/dynamic';
 import { useRealtimeLocations } from '@/hooks/useRealtimeLocations';
 import Sidebar from '@/components/Sidebar';
