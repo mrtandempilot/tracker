@@ -1,11 +1,13 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+// Fallback values for build-time evaluation when environment variables are not available
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co';
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder-key';
 
-if (!supabaseUrl) {
-    console.warn('NEXT_PUBLIC_SUPABASE_URL is missing. Build may fail or features may be limited.');
+if (supabaseUrl === 'https://placeholder.supabase.co') {
+    console.warn('NEXT_PUBLIC_SUPABASE_URL is missing. Using placeholder for build phase.');
 }
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
 
